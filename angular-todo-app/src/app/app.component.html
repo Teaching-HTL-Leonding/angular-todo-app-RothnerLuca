@@ -1,0 +1,65 @@
+<h1>ToDo List</h1>
+
+<form id="addTodoForm">
+  <button type="button" (click)="addNewBtnOnClick()" [disabled]="!hideInputForm">
+    <mat-icon>add</mat-icon>
+  </button>
+  <button id="checkBtn" type="button" (click)="checkBtnOnClick()" [disabled]="!inputForm.form.valid" [hidden]="hideInputForm">
+    <mat-icon>check</mat-icon>
+  </button>
+  <button id="cancelBtn" type="button" (click)="cancelBtnOnClick()" [hidden]="hideInputForm">
+    <mat-icon>close</mat-icon>
+  </button>
+  <form id="addTodoInputFields" #inputForm="ngForm" [hidden]="hideInputForm">
+    <div>
+      <label id="descInputLabel" for="descInput">Description:</label>
+      <input id="descInput" class="ng-invalid" name="descInput" type="text" minlength="2" maxlength="50" required [(ngModel)]="inputDesc">
+      <label id="personInputLabel" for="personInput">Person Name:</label>
+      <input id="personInput" class="ng-invalid" name="personInput" type="text" minlength="2" maxlength="50" required [(ngModel)]="inputPerson">
+    </div>
+  </form>
+</form>
+
+<form class="filters">
+  <select name="personFilter" id="personFilter" [(ngModel)]="data.selectedPerson" (change)="personFilterOnChange()">
+    <option value="All">All</option>
+    <option *ngFor="let person of data.personsToFilter" [ngValue]="person">{{person}}</option>
+  </select>
+  <select name="statusFilter" id="statusFilter" [(ngModel)]="data.selectedStatus" (change)="statusFilterOnChange()">
+    <option value="DoneAndUndone">Done & Undone</option>
+    <option value="Done">Done</option>
+    <option value="Undone">Undone</option>
+  </select>
+</form>
+
+<form>
+  <table>
+    <tr>
+      <th>#</th>
+      <th id="descCol">Description</th>
+      <th id="persCol">Person</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+    <tr *ngFor="let todo of getData(); let rowIx = index">
+      <td>{{rowIx+1}}</td>
+      <td>{{todo.desc}}</td>
+      <td>{{todo.person}}</td>
+      <td>{{todo.status}}
+        <!-- TODO: fix checkbox -->
+        <input type="checkbox" id="status" name="status" [(ngModel)]="todo.status">
+      </td>
+      <td class="button-column">
+        <!-- TODO: Edit button functionality -->
+        <button type="button-in-column">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button type="button-in-column" (click)="removeTodo(rowIx)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </tr>
+  </table>
+</form>
+
+<router-outlet></router-outlet>
