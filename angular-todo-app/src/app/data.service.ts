@@ -9,8 +9,8 @@ export class DataService {
   public todos: Todo[] = [
     new Todo('a', 'me', true),
     new Todo('b', 'josef', false),
-    new Todo('c', 'herbert', true),
-    new Todo('d', 'josef', false),
+    new Todo('c', 'herbert', false),
+    new Todo('d', 'josef', true),
   ];
   public personsToFilter: string[] = [];
   public saveTodos: Todo[] = [];

@@ -3,20 +3,43 @@ h1 {
 }
 
 table, th, td {
-  border: 1px solid black;
   border-collapse: collapse;
 }
 
-button-in-column {
-  margin-left: 10px;
+th {
+  color: white;
+  background-color: black;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+th:not(:first-child) {
+  border-left: 2px solid white;
+}
+
+th:last-child {
+  border-left: 2.5px solid white;
+}
+
+th:first-child {
+  border-right: 2.5px solid white;
 }
 
 table {
   width: 100%;
+  border-bottom: 2px solid black;
+  border-left: 2px solid black;
+  border-right: 2.5px solid black;
 }
 
 tr {
   text-align: center;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #EEEEEE;
 }
 
 .button-column {
@@ -28,23 +51,23 @@ tr {
 }
 
 #personFilter {
-  margin-left: 260px;
+  margin-left: 325px;
   width: 110px;
   max-width: 110px;
 }
 
 #statusFilter {
-  margin-left: 43px;
+  margin-left: 55px;
   width: 120px;
   max-width: 120px;
 }
 
-#persCol {
+.persCol {
   width: 160px;
   max-width: 160px;
 }
 
-#descCol {
+.descCol {
   width: 200px;
   max-width: 200px;
 }
@@ -55,6 +78,7 @@ tr {
 
 #addTodoInputFields {
   margin-top: 20px;
+  caret-color: red;
 }
 
 #personInput, #descInput {

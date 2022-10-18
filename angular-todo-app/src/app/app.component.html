@@ -1,21 +1,34 @@
 <h1>ToDo List</h1>
 
 <form id="addTodoForm">
-  <button type="button" (click)="addNewBtnOnClick()" [disabled]="!hideInputForm">
+  <!-- <button type="button" (click)="addNewBtnOnClick()" [disabled]="!hideInputForm">
+    <mat-icon>add</mat-icon>
+  </button> -->
+  <button mat-raised-button color="primary" type="button" (click)="addNewBtnOnClick()" [disabled]="!hideInputForm">
     <mat-icon>add</mat-icon>
   </button>
-  <button id="checkBtn" type="button" (click)="checkBtnOnClick()" [disabled]="!inputForm.form.valid" [hidden]="hideInputForm">
+  <!-- <button mat-raised-button id="checkBtn" type="button" (click)="checkBtnOnClick()" [disabled]="!inputForm.form.valid" [hidden]="hideInputForm">
     <mat-icon>check</mat-icon>
   </button>
-  <button id="cancelBtn" type="button" (click)="cancelBtnOnClick()" [hidden]="hideInputForm">
+  <button mat-raised-button id="cancelBtn" type="button" (click)="cancelBtnOnClick()" [hidden]="hideInputForm">
+    <mat-icon>close</mat-icon>
+  </button> -->
+  <button mat-raised-button id="checkBtn" type="button" (click)="checkBtnOnClick()" [disabled]="!inputForm.form.valid" *ngIf="!hideInputForm">
+    <mat-icon>check</mat-icon>
+  </button>
+  <button mat-raised-button id="cancelBtn" type="button" (click)="cancelBtnOnClick()" *ngIf="!hideInputForm">
     <mat-icon>close</mat-icon>
   </button>
   <form id="addTodoInputFields" #inputForm="ngForm" [hidden]="hideInputForm">
     <div>
-      <label id="descInputLabel" for="descInput">Description:</label>
-      <input id="descInput" class="ng-invalid" name="descInput" type="text" minlength="2" maxlength="50" required [(ngModel)]="inputDesc">
-      <label id="personInputLabel" for="personInput">Person Name:</label>
-      <input id="personInput" class="ng-invalid" name="personInput" type="text" minlength="2" maxlength="50" required [(ngModel)]="inputPerson">
+      <mat-form-field id="descInputLabel" appearance="fill">
+        <mat-label id="descInputLabel" for="descInput">Description:</mat-label>
+        <input matInput id="descInput" class="ng-invalid" name="descInput" type="text" minlength="1" maxlength="25" required [(ngModel)]="inputDesc">
+      </mat-form-field>
+      <mat-form-field id="personInputLabel" appearance="fill">
+        <mat-label id="personInputLabel" for="personInput">Person Name:</mat-label>
+        <input matInput id="personInput" class="ng-invalid" name="personInput" type="text" maxlength="25" [(ngModel)]="inputPerson">
+      </mat-form-field>
     </div>
   </form>
 </form>
@@ -34,31 +47,33 @@
 
 <form>
   <table>
-    <tr>
-      <th>#</th>
-      <th id="descCol">Description</th>
-      <th id="persCol">Person</th>
-      <th>Status</th>
-      <th>Actions</th>
-    </tr>
-    <tr *ngFor="let todo of getData(); let rowIx = index">
-      <td>{{rowIx+1}}</td>
-      <td>{{todo.desc}}</td>
-      <td>{{todo.person}}</td>
-      <td>{{todo.status}}
-        <!-- TODO: fix checkbox -->
-        <input type="checkbox" id="status" name="status" [(ngModel)]="todo.status">
-      </td>
-      <td class="button-column">
-        <!-- TODO: Edit button functionality -->
-        <button type="button-in-column">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button type="button-in-column" (click)="removeTodo(rowIx)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </td>
-    </tr>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Description</th>
+        <th>Person</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let todo of getData(); let rowIx = index">
+        <td>{{rowIx+1}}</td>
+        <td>{{todo.desc}}</td>
+        <td>{{todo.person | emptyPersonToDashPipe }}</td>
+        <td>{{todo.status | statusToStringPipe }}
+          <mat-checkbox [id]="'statusCheckbox'+rowIx" name="statusCheckbox" color="primary" [checked]="todo.status" (change)="todo.status = !todo.status"></mat-checkbox>
+        </td>
+        <td class="button-column">
+          <button mat-icon-button type="button" (click)="editBtnOnClick(rowIx)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" type="button" (click)="removeTodo(rowIx)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </tr>
+    </tbody>
   </table>
 </form>
 

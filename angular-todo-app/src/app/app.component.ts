@@ -10,23 +10,52 @@ export class AppComponent {
   public hideInputForm = true;
   public inputDesc: string = "";
   public inputPerson: string = "";
+  private onEdit: boolean = false;
+  private currIx: number = 0;
+  public displayedColumns: any[] = ['desc', 'person', 'status'];
 
   constructor(public data: DataService) {
     this.data.currentTodos = this.data.todos;
   }
 
+  public editBtnOnClick(index: number) {
+    this.onEdit = true;
+    this.currIx = index;
+    this.hideInputForm = false;
+    this.inputDesc = this.data.currentTodos[index].desc;
+    this.inputPerson = this.data.currentTodos[index].person;
+  }
+
   public checkBtnOnClick() {
-    this.data.addTodo(this.inputDesc, this.inputPerson);
+    if (!this.onEdit) {
+      this.data.addTodo(this.inputDesc, this.inputPerson);
+    } else {
+      this.data.currentTodos[this.currIx].desc = this.inputDesc;
+      this.data.currentTodos[this.currIx].person = this.inputPerson;
+
+      let todo = this.data.currentTodos[this.currIx];
+      for (let i = 0; i < this.data.todos.length; i++) {
+        if (this.data.todos[i] === todo) {
+          this.data.todos[i].desc = this.inputDesc;
+          this.data.todos[i].person = this.inputPerson;
+          break;
+        }
+      }
+    }
     this.hideInputForm = true;
-    this.inputDesc = "";
-    this.inputPerson = "";
-    this.data.fillPersonsToFilter();
+      this.inputDesc = "";
+      this.inputPerson = "";
+      this.data.fillPersonsToFilter();
+      this.onEdit = false;
+      this.currIx = 0;
   }
 
   public cancelBtnOnClick() {
     this.inputDesc = "";
     this.inputPerson = "";
     this.hideInputForm = true;
+    this.onEdit = false;
+    this.currIx = 0;
   }
 
   public addNewBtnOnClick() {
@@ -42,6 +71,7 @@ export class AppComponent {
     for (let i = 0; i < this.data.todos.length; i++) {
       if (this.data.todos[i] === remTodo) {
         delete this.data.todos[i];
+        break;
       }
     }
     delete this.data.currentTodos[index];
